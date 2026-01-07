@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FM X ABD TOOLKIT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #25D366;
+            --primary-dark: #128C7E;
+            --secondary: #075E54;
+            --accent: #34B7F1;
+            --danger: #FF4444;
+            --success: #25D366;
+            --dark: #111827;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --card-bg: #ffffff;
+            --like-color: #FF4757;
+            --save-color: #FF9F43;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #374151;
+            min-height: 100vh;
+        }
+
+        /* WhatsApp Gradient Background */
+        .whatsapp-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            z-index: -1;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            border: 3px solid var(--primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-logo {
+            margin-bottom: 25px;
+        }
+
+        .login-logo img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            margin-bottom: 15px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .login-logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .login-logo p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .password-input {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .password-input i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .password-input input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .password-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .login-error {
+            color: var(--danger);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+        }
+
+        .logo-text h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .logo-text span {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            background: #f9fafb;
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat .value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat .label {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .search-box input {
+            padding: 10px 12px 10px 35px;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            width: 200px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            width: 250px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 2px solid var(--danger);
+            color: var(--danger);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Saved Tools Button */
+        .saved-tools-btn {
+            background: transparent;
+            border: 2px solid var(--save-color);
+            color: var(--save-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .saved-tools-btn:hover {
+            background: var(--save-color);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* WhatsApp Channel Button */
+        .whatsapp-channel {
+            text-align: center;
+            margin: 30px auto;
+            max-width: 600px;
+            padding: 0 20px;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 350px;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        /* Admin Panel - ONLY for Admin */
+        .admin-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+            display: none;
+            border: 2px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .admin-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-tool-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .add-tool-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        /* Category Filters */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            color: var(--gray);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Tools Container */
+        .tools-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        /* Tools Grid - 3 per row */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 1000px) {
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Tool Card Design */
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 2px solid #e5e7eb;
+            position: relative;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+
+        /* Like & Save Buttons on TOP */
+        .tool-top-actions {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .like-btn-top, .save-btn-top {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            border: 2px solid white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .like-btn-top {
+            background: rgba(255, 71, 87, 0.9);
+            color: white;
+        }
+
+        .like-btn-top.liked {
+            background: var(--like-color);
+        }
+
+        .save-btn-top {
+            background: rgba(255, 159, 67, 0.9);
+            color: white;
+        }
+
+        .save-btn-top.saved {
+            background: var(--save-color);
+        }
+
+        .like-btn-top:hover, .save-btn-top:hover {
+            transform: scale(1.1);
+        }
+
+        .tool-image {
+            width: 100%;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+
+        .tool-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover .tool-image img {
+            transform: scale(1.05);
+        }
+
+        .tool-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        .tool-content {
+            padding: 20px;
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        /* Icon container */
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            overflow: hidden;
+        }
+
+        .tool-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tool-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .tool-category {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .tool-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            min-height: 40px;
+        }
+
+        /* Tool Stats */
+        .tool-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-top: 1px solid #e5e7eb;
+            margin-bottom: 15px;
+        }
+
+        .tool-stat {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .tool-stat:hover {
+            background: #f9fafb;
+        }
+
+        .tool-stat .num {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .tool-stat .text {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        .tool-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .view-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        /* Admin Actions - Only visible to Admin */
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .edit-btn, .delete-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            background: rgba(37, 211, 102, 0.1);
+            color: var(--primary);
+            border: 2px solid rgba(37, 211, 102, 0.3);
+        }
+
+        .edit-btn:hover {
+            background: rgba(37, 211, 102, 0.2);
+        }
+
+        .delete-btn {
+            background: rgba(255, 68, 68, 0.1);
+            color: var(--danger);
+            border: 2px solid rgba(255, 68, 68, 0.3);
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 68, 68, 0.2);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 3px solid var(--primary);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.8rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--dark);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
+        }
+
+        .upload-hint {
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .preview-image {
+            width: 100%;
+            max-height: 150px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 2px dashed #ddd;
+            display: none;
+        }
+
+        .icon-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            margin-top: 10px;
+            object-fit: cover;
+            border: 2px dashed #ddd;
+            display: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .save-btn, .cancel-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .cancel-btn {
+            background: #f3f4f6;
+            color: var(--gray);
+            border: 2px solid #e5e7eb;
+        }
+
+        .cancel-btn:hover {
+            background: #e5e7eb;
+        }
+
+        /* Saved Tools Page */
+        .saved-tools-page {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 1200px;
+            border: 2px solid var(--save-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .saved-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .saved-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--save-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            background: #f3f4f6;
+            color: var(--gray);
+            border: 2px solid #e5e7eb;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: #e5e7eb;
+        }
+
+        .empty-saved {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--gray);
+        }
+
+        .empty-saved i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #e5e7eb;
+        }
+
+        .empty-saved h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-top: 3px solid var(--primary);
+            margin-top: 50px;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .footer-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-stat {
+            text-align: center;
+            padding: 15px 25px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            min-width: 120px;
+        }
+
+        .footer-stat .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .footer-stat .label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .copyright {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* Premium Badge */
+        .premium-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(45deg, #f59e0b, #fbbf24);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 300px;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Like & Save Animations */
+        .heart-beat {
+            animation: heartBeat 0.5s ease;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(0.9); }
+            75% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .save-bounce {
+            animation: saveBounce 0.5s ease;
+        }
+
+        @keyframes saveBounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-stats {
+                order: 2;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .header-controls {
+                order: 3;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .search-box input {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .search-box input:focus {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .add-tool-btn {
+                width: 100%;
+            }
+
+            .filters {
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .saved-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .tool-top-actions {
+                top: 10px;
+                left: 10px;
+            }
+
+            .like-btn-top, .save-btn-top {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 25px 20px;
+            }
+
+            .login-logo h1 {
+                font-size: 1.8rem;
+            }
+
+            .tools-container {
+                padding: 0 15px 30px;
+            }
+
+            .footer-stats {
+                gap: 15px;
+            }
+
+            .footer-stat {
+                padding: 12px 20px;
+                min-width: 100px;
+            }
+
+            .footer-stat .value {
+                font-size: 1.5rem;
+            }
+
+            .tool-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .tool-stat {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- WhatsApp Gradient Background -->
+    <div class="whatsapp-bg"></div>
+
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="https://i.ibb.co/B2gkNxgJ/IMG-1385.jpg" 
+                     alt="FM X ABD TOOLKIT Logo">
+                <h1>FM X ABD TOOLKIT</h1>
+                <p>FM X ABD OFFICIAL TOOLS</p>
+            </div>
+            
+            <div class="password-input">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+            
+            <button class="login-btn" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Access Toolkit
+            </button>
+            
+            <div class="login-error" id="loginError">
+                Wrong password! Try: fmxabd (Member) or fmxadmin (Admin)
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-container">
+                <div class="logo">
+                    <img src="https://i.ibb.co/B2gkNxgJ/IMG-1385.jpg" 
+                         alt="FM X ABD TOOLKIT Logo">
+                    <div class="logo-text">
+                        <h2>FM X ABD TOOLKIT</h2>
+                        <span>FM X ABD OFFICIAL TOOLS</span>
+                    </div>
+                </div>
+                
+                <div class="header-stats">
+                    <div class="stat">
+                        <div class="value" id="liveCount">0</div>
+                        <div class="label">Live</div>
+                    </div>
+                    <div class="stat">
+                        <div class="value" id="totalLikes">0</div>
+                        <div class="label">Likes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="value" id="toolsCount">0</div>
+                        <div class="label">Tools</div>
+                    </div>
+                </div>
+                
+                <div class="header-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search tools...">
+                    </div>
+                    <button class="saved-tools-btn" id="savedToolsBtn">
+                        <i class="fas fa-bookmark"></i> Saved (<span id="savedCount">0</span>)
+                    </button>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>The Official FM X ABD Toolkit</h1>
+            <p>Premium tools and resources for professionals. Everything you need in one place.</p>
+        </section>
+
+        <!-- WhatsApp Channel Button -->
+        <div class="whatsapp-channel">
+            <a href="https://whatsapp.com/channel/0029VbBwUOZ6BIEaxmYl3m1Z" target="_blank" class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> Join Our WhatsApp Channel
+            </a>
+        </div>
+
+        <!-- Admin Panel (ONLY visible to Admin) -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="admin-header">
+                <div class="admin-title">
+                    <i class="fas fa-user-shield"></i> Admin Control Panel
+                </div>
+                <button class="add-tool-btn" id="addToolBtn">
+                    <i class="fas fa-plus-circle"></i> Add New Tool
+                </button>
+            </div>
+        </div>
+
+        <!-- Saved Tools Page -->
+        <div class="saved-tools-page" id="savedToolsPage">
+            <div class="saved-header">
+                <div class="saved-title">
+                    <i class="fas fa-bookmark"></i> My Saved Tools
+                </div>
+                <button class="back-btn" id="backToHome">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+            </div>
+            <div class="tools-container">
+                <div class="tools-grid" id="savedToolsGrid">
+                    <!-- Saved tools will load here -->
+                </div>
+                <div class="empty-saved" id="emptySaved" style="display: none;">
+                    <i class="fas fa-bookmark"></i>
+                    <h3>No Saved Tools Yet</h3>
+                    <p>Like and save your favorite tools to see them here!</p>
+                    <button class="back-btn" id="backToHome2" style="margin-top: 20px;">
+                        <i class="fas fa-arrow-left"></i> Browse Tools
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="filters" id="categoryFilters">
+            <button class="filter-btn active" data-filter="all">All Tools</button>
+            <button class="filter-btn" data-filter="quran">Quran Pak</button>
+            <button class="filter-btn" data-filter="islamic">Al Islamic</button>
+            <button class="filter-btn" data-filter="premium">Premium</button>
+            <button class="filter-btn" data-filter="liked">Liked</button>
+            <button class="filter-btn" data-filter="saved">Saved</button>
+        </div>
+
+        <!-- Tools Grid -->
+        <div class="tools-container" id="mainToolsContainer">
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Tools will load here -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-logo">
+                <i class="fab fa-whatsapp"></i> FM X ABD TOOLKIT
+            </div>
+            
+            <div class="footer-stats">
+                <div class="footer-stat">
+                    <div class="value" id="footerLive">0</div>
+                    <div class="label">Live Users</div>
+                </div>
+                <div class="footer-stat">
+                    <div class="value" id="footerLikes">0</div>
+                    <div class="label">Total Likes</div>
+                </div>
+                <div class="footer-stat">
+                    <div class="value" id="footerTools">0</div>
+                    <div class="label">Active Tools</div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                Powered By Abdullah With Love | Join WhatsApp Channel for Updates | The Official FM Toolkit
+            </div>
+        </footer>
+    </div>
+
+    <!-- Add/Edit Tool Modal -->
+    <div class="modal-overlay" id="toolModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-toolbox"></i> <span id="modalTitle">Add New Tool</span></h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            
+            <form id="toolForm">
+                <div class="form-group">
+                    <label for="toolName"><i class="fas fa-tag"></i> Tool Name</label>
+                    <input type="text" id="toolName" class="form-input" placeholder="Enter tool name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="toolCategory"><i class="fas fa-folder"></i> Category</label>
+                    <select id="toolCategory" class="form-select" required>
+                        <option value="quran">Quran Pak</option>
+                        <option value="islamic">Al Islamic</option>
+                        <option value="premium">Premium</option>
+                        <option value="general">General</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="toolDescription"><i class="fas fa-align-left"></i> Description</label>
+                    <input type="text" id="toolDescription" class="form-input" placeholder="Enter tool description" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="toolUrl"><i class="fas fa-link"></i> Tool URL</label>
+                    <input type="url" id="toolUrl" class="form-input" placeholder="https://example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="toolImage"><i class="fas fa-image"></i> Tool Image</label>
+                    <input type="text" id="toolImage" class="form-input" 
+                           placeholder="Paste image URL or type 'upload' for your photo" 
+                           value="https://images.unsplash.com/photo-1611605698335-8b1569810432?w=800">
+                    <div class="upload-hint">
+                        <i class="fas fa-info-circle"></i>
+                        Type "upload" to select photo from your device
+                    </div>
+                    <img id="imagePreview" class="preview-image" src="" alt="Tool Preview">
+                </div>
+                
+                <div class="form-group">
+                    <label for="toolIcon"><i class="fas fa-icons"></i> Icon (FontAwesome class OR Image URL)</label>
+                    <input type="text" id="toolIcon" class="form-input" 
+                           placeholder="fas fa-tools OR paste image URL" 
+                           value="fas fa-tools">
+                    <div class="upload-hint">
+                        <i class="fas fa-info-circle"></i>
+                        Use FontAwesome class (fas fa-tools) OR paste image URL / type 'upload'
+                    </div>
+                    <img id="iconPreview" class="icon-preview" src="" alt="Icon Preview">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="save-btn" id="saveBtn">Save Tool</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // WhatsApp Themed Toolkit System with Like & Save on TOP
+        const MEMBER_PASSWORD = "fmxabd";
+        const ADMIN_PASSWORD = "fmxadmin";
+        
+        let currentUser = null;
+        let tools = [];
+        let totalViews = 0;
+        let liveUsers = 0;
+        let currentEditIndex = -1;
+        
+        // User data for likes and saves
+        let userData = {
+            likedTools: [],
+            savedTools: []
+        };
+        
+        // NO DEFAULT TOOLS - EMPTY ARRAY
+        const defaultTools = [];
+
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const mainContent = document.getElementById('mainContent');
+        const adminPanel = document.getElementById('adminPanel');
+        const savedToolsPage = document.getElementById('savedToolsPage');
+        const mainToolsContainer = document.getElementById('mainToolsContainer');
+        const categoryFilters = document.getElementById('categoryFilters');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginError = document.getElementById('loginError');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const savedToolsBtn = document.getElementById('savedToolsBtn');
+        const backToHome = document.getElementById('backToHome');
+        const backToHome2 = document.getElementById('backToHome2');
+        const toolsGrid = document.getElementById('toolsGrid');
+        const savedToolsGrid = document.getElementById('savedToolsGrid');
+        const emptySaved = document.getElementById('emptySaved');
+        const addToolBtn = document.getElementById('addToolBtn');
+        const searchInput = document.getElementById('searchInput');
+        const toolModal = document.getElementById('toolModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const toolForm = document.getElementById('toolForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const toolImageInput = document.getElementById('toolImage');
+        const toolIconInput = document.getElementById('toolIcon');
+        const imagePreview = document.getElementById('imagePreview');
+        const iconPreview = document.getElementById('iconPreview');
+        
+        // Stats elements
+        const liveCountEl = document.getElementById('liveCount');
+        const totalLikesEl = document.getElementById('totalLikes');
+        const toolsCountEl = document.getElementById('toolsCount');
+        const savedCountEl = document.getElementById('savedCount');
+        const footerLive = document.getElementById('footerLive');
+        const footerLikes = document.getElementById('footerLikes');
+        const footerTools = document.getElementById('footerTools');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load data from localStorage
+            const savedTools = localStorage.getItem('fmxabd_tools');
+            tools = savedTools ? JSON.parse(savedTools) : [...defaultTools];
+            
+            // Load user data
+            const savedUserData = localStorage.getItem('fmxabd_user_data');
+            if (savedUserData) {
+                userData = JSON.parse(savedUserData);
+            }
+            
+            // Load stats
+            totalViews = parseInt(localStorage.getItem('fmxabd_total_views') || '0');
+            liveUsers = parseInt(localStorage.getItem('fmxabd_live_users') || '15');
+            
+            // Check login
+            const savedUser = localStorage.getItem('fmxabd_toolkit_user');
+            if (savedUser) {
+                currentUser = savedUser;
+                showMainContent();
+            }
+            
+            updateStats();
+            startLiveCounter();
+            renderTools();
+            
+            // Image input listeners for upload
+            toolImageInput.addEventListener('input', handleImageInput);
+            toolIconInput.addEventListener('input', handleIconInput);
+        });
+
+        // Image upload handler
+        function handleImageInput(e) {
+            const value = e.target.value.toLowerCase();
+            
+            if (value.startsWith('http') || value.startsWith('data:')) {
+                imagePreview.src = value;
+                imagePreview.style.display = 'block';
+                
+                imagePreview.onerror = function() {
+                    imagePreview.style.display = 'none';
+                    showNotification('Image failed to load. Please check URL.');
+                };
+                
+                imagePreview.onload = function() {
+                    imagePreview.style.display = 'block';
+                };
+            } else {
+                imagePreview.style.display = 'none';
+            }
+            
+            if (value === 'upload' || value === 'pic' || value === 'photo' || value === 'image') {
+                uploadImage('toolImage', imagePreview);
+            }
+        }
+
+        // Icon input handler
+        function handleIconInput(e) {
+            const value = e.target.value;
+            
+            if (value.startsWith('http') || value.startsWith('data:')) {
+                iconPreview.src = value;
+                iconPreview.style.display = 'block';
+                
+                iconPreview.onerror = function() {
+                    iconPreview.style.display = 'none';
+                };
+                
+                iconPreview.onload = function() {
+                    iconPreview.style.display = 'block';
+                };
+            } else {
+                iconPreview.style.display = 'none';
+            }
+            
+            if (value.toLowerCase() === 'upload' || value.toLowerCase() === 'pic' || value.toLowerCase() === 'icon') {
+                uploadImage('toolIcon', iconPreview);
+            }
+        }
+
+        // Upload image from device
+        function uploadImage(targetField, previewElement) {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            
+            fileInput.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        showNotification('Image too large! Max size: 5MB');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const base64Image = e.target.result;
+                        if (targetField === 'toolImage') {
+                            toolImageInput.value = base64Image;
+                            imagePreview.src = base64Image;
+                            imagePreview.style.display = 'block';
+                        } else {
+                            toolIconInput.value = base64Image;
+                            iconPreview.src = base64Image;
+                            iconPreview.style.display = 'block';
+                        }
+                        showNotification('Image uploaded successfully!');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            fileInput.click();
+        }
+
+        // Login
+        loginBtn.addEventListener('click', handleLogin);
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        function handleLogin() {
+            const password = passwordInput.value.trim();
+            
+            if (password === MEMBER_PASSWORD) {
+                currentUser = 'member';
+                loginSuccess();
+            } else if (password === ADMIN_PASSWORD) {
+                currentUser = 'admin';
+                loginSuccess();
+            } else {
+                loginError.style.display = 'block';
+                passwordInput.style.borderColor = 'var(--danger)';
+                setTimeout(() => {
+                    passwordInput.style.borderColor = '#ddd';
+                }, 1000);
+            }
+        }
+
+        function loginSuccess() {
+            localStorage.setItem('fmxabd_toolkit_user', currentUser);
+            showMainContent();
+            loginError.style.display = 'none';
+            passwordInput.value = '';
+            showNotification(`Welcome ${currentUser === 'admin' ? 'Admin' : 'Member'}!`);
+        }
+
+        function showMainContent() {
+            loginScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+            
+            // Show admin panel ONLY for admin
+            if (currentUser === 'admin') {
+                adminPanel.style.display = 'block';
+                addToolBtn.style.display = 'flex';
+            } else {
+                adminPanel.style.display = 'none';
+                addToolBtn.style.display = 'none';
+            }
+            
+            updateSavedCount();
+            renderTools();
+        }
+
+        // Show Saved Tools Page
+        savedToolsBtn.addEventListener('click', function() {
+            showSavedTools();
+        });
+
+        backToHome.addEventListener('click', showHomePage);
+        backToHome2.addEventListener('click', showHomePage);
+
+        function showSavedTools() {
+            mainToolsContainer.style.display = 'none';
+            categoryFilters.style.display = 'none';
+            adminPanel.style.display = 'none';
+            savedToolsPage.style.display = 'block';
+            
+            renderSavedTools();
+        }
+
+        function showHomePage() {
+            savedToolsPage.style.display = 'none';
+            mainToolsContainer.style.display = 'block';
+            categoryFilters.style.display = 'flex';
+            
+            if (currentUser === 'admin') {
+                adminPanel.style.display = 'block';
+            }
+            
+            renderTools();
+        }
+
+        // Logout
+        logoutBtn.addEventListener('click', function() {
+            currentUser = null;
+            localStorage.removeItem('fmxabd_toolkit_user');
+            mainContent.style.display = 'none';
+            loginScreen.style.display = 'flex';
+            showNotification('Logged out successfully!');
+        });
+
+        // Update stats
+        function updateStats() {
+            // Calculate totals
+            const totalToolViews = tools.reduce((sum, tool) => sum + (tool.views || 0), 0);
+            const totalToolLikes = tools.reduce((sum, tool) => sum + (tool.likes || 0), 0);
+            const userSavedCount = userData.savedTools.length;
+            
+            liveCountEl.textContent = liveUsers;
+            totalLikesEl.textContent = totalToolLikes.toLocaleString();
+            toolsCountEl.textContent = tools.length;
+            savedCountEl.textContent = userSavedCount;
+            
+            footerLive.textContent = liveUsers;
+            footerLikes.textContent = totalToolLikes.toLocaleString();
+            footerTools.textContent = tools.length;
+            
+            totalViews = totalToolViews;
+            
+            localStorage.setItem('fmxabd_total_views', totalViews);
+            localStorage.setItem('fmxabd_live_users', liveUsers);
+        }
+
+        // Update saved count
+        function updateSavedCount() {
+            savedCountEl.textContent = userData.savedTools.length;
+        }
+
+        // Live counter
+        function startLiveCounter() {
+            setInterval(() => {
+                const change = Math.floor(Math.random() * 5) - 2;
+                liveUsers = Math.max(0, liveUsers + change);
+                updateStats();
+            }, 10000);
+        }
+
+        // Like a tool
+        function likeTool(toolId) {
+            const toolIndex = tools.findIndex(t => t.id === toolId);
+            if (toolIndex === -1) return;
+            
+            const tool = tools[toolIndex];
+            const userIndex = userData.likedTools.indexOf(toolId);
+            
+            if (userIndex === -1) {
+                // Like the tool
+                tool.likes = (tool.likes || 0) + 1;
+                userData.likedTools.push(toolId);
+                showNotification('Tool liked! ❤️');
+            } else {
+                // Unlike the tool
+                tool.likes = Math.max(0, (tool.likes || 0) - 1);
+                userData.likedTools.splice(userIndex, 1);
+                showNotification('Tool unliked');
+            }
+            
+            // Save data to localStorage
+            saveTools();
+            saveUserData();
+            updateStats();
+            
+            // Re-render current view
+            if (savedToolsPage.style.display === 'block') {
+                renderSavedTools();
+            } else {
+                renderTools();
+            }
+        }
+
+        // Save/Unsave a tool
+        function saveTool(toolId) {
+            const toolIndex = tools.findIndex(t => t.id === toolId);
+            if (toolIndex === -1) return;
+            
+            const tool = tools[toolIndex];
+            const userIndex = userData.savedTools.indexOf(toolId);
+            
+            if (userIndex === -1) {
+                // Save the tool
+                tool.saves = (tool.saves || 0) + 1;
+                userData.savedTools.push(toolId);
+                showNotification('Tool saved! 📌');
+            } else {
+                // Unsave the tool
+                tool.saves = Math.max(0, (tool.saves || 0) - 1);
+                userData.savedTools.splice(userIndex, 1);
+                showNotification('Tool removed from saved');
+            }
+            
+            // Save data to localStorage
+            saveTools();
+            saveUserData();
+            updateStats();
+            updateSavedCount();
+            
+            // Re-render current view
+            if (savedToolsPage.style.display === 'block') {
+                renderSavedTools();
+            } else {
+                renderTools();
+            }
+        }
+
+        // Render tools
+        function renderTools(filter = 'all') {
+            toolsGrid.innerHTML = '';
+            
+            let filteredTools = tools;
+            
+            if (filter !== 'all') {
+                if (filter === 'liked') {
+                    filteredTools = tools.filter(tool => userData.likedTools.includes(tool.id));
+                } else if (filter === 'saved') {
+                    filteredTools = tools.filter(tool => userData.savedTools.includes(tool.id));
+                } else {
+                    filteredTools = tools.filter(tool => tool.category === filter);
+                }
+            }
+            
+            if (filteredTools.length === 0) {
+                toolsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--gray);">
+                        <i class="fas fa-tools" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.5;"></i>
+                        <h3 style="margin-bottom: 10px;">No tools found</h3>
+                        <p>${currentUser === 'admin' ? 'Click "Add New Tool" to add your first tool!' : 'No tools available yet. Admin will add tools soon!'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredTools.forEach((tool, index) => {
+                const toolCard = createToolCard(tool, index, false);
+                toolsGrid.appendChild(toolCard);
+            });
+        }
+
+        // Render saved tools
+        function renderSavedTools() {
+            savedToolsGrid.innerHTML = '';
+            
+            const savedToolsList = tools.filter(tool => userData.savedTools.includes(tool.id));
+            
+            if (savedToolsList.length === 0) {
+                emptySaved.style.display = 'block';
+                savedToolsGrid.style.display = 'none';
+                return;
+            }
+            
+            emptySaved.style.display = 'none';
+            savedToolsGrid.style.display = 'grid';
+            
+            savedToolsList.forEach((tool, index) => {
+                const toolCard = createToolCard(tool, index, true);
+                savedToolsGrid.appendChild(toolCard);
+            });
+        }
+
+        function createToolCard(tool, index, isSavedPage = false) {
+            const card = document.createElement('div');
+            card.className = 'tool-card';
+            
+            // Check if tool is liked/saved by current user
+            const isLiked = userData.likedTools.includes(tool.id);
+            const isSaved = userData.savedTools.includes(tool.id);
+            
+            // Get badge text
+            let badgeText = tool.category.toUpperCase();
+            if (tool.isPremium) {
+                badgeText = 'PREMIUM';
+            }
+            
+            // Check if icon is an image URL or FontAwesome class
+            const isIconImage = tool.icon && (tool.icon.startsWith('http') || tool.icon.startsWith('data:'));
+            
+            card.innerHTML = `
+                <!-- Like & Save Buttons on TOP -->
+                <div class="tool-top-actions">
+                    <div class="like-btn-top ${isLiked ? 'liked' : ''}" data-tool-id="${tool.id}" data-action="like">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="save-btn-top ${isSaved ? 'saved' : ''}" data-tool-id="${tool.id}" data-action="save">
+                        <i class="fas fa-bookmark"></i>
+                    </div>
+                </div>
+                
+                <div class="tool-image">
+                    <img src="${tool.image}" alt="${tool.name}" 
+                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1611605698335-8b1569810432?w=800';"
+                         style="${tool.image.startsWith('data:image') ? 'object-fit: cover;' : ''}">
+                    <div class="tool-badge">${badgeText}</div>
+                </div>
+                
+                <div class="tool-content">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            ${isIconImage ? 
+                                `<img src="${tool.icon}" alt="${tool.name} icon" 
+                                      onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\"fas fa-tools\"></i>';"
+                                      style="object-fit: cover;">` : 
+                                `<i class="${tool.icon || 'fas fa-tools'}"></i>`
+                            }
+                        </div>
+                        <div class="tool-info">
+                            <div class="tool-title">${tool.name}</div>
+                            <div class="tool-category">
+                                ${getCategoryName(tool.category)}
+                                ${tool.isPremium ? '<span class="premium-badge"><i class="fas fa-crown"></i> PRO</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="tool-desc">${tool.description}</p>
+                    
+                    <div class="tool-stats">
+                        <div class="tool-stat" data-tool-id="${tool.id}" data-action="like">
+                            <div class="num">
+                                <i class="fas fa-heart"></i>
+                                ${tool.likes || 0}
+                            </div>
+                            <div class="text">Likes</div>
+                        </div>
+                        
+                        <div class="tool-stat" data-tool-id="${tool.id}" data-action="view">
+                            <div class="num">
+                                <i class="fas fa-eye"></i>
+                                ${tool.views || 0}
+                            </div>
+                            <div class="text">Views</div>
+                        </div>
+                        
+                        <div class="tool-stat" data-tool-id="${tool.id}" data-action="save">
+                            <div class="num">
+                                <i class="fas fa-bookmark"></i>
+                                ${tool.saves || 0}
+                            </div>
+                            <div class="text">Saves</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-actions">
+                        <button class="view-btn" data-tool-id="${tool.id}" data-action="open">
+                            <i class="fas fa-external-link-alt"></i> View Tool
+                        </button>
+                    </div>
+                    
+                    ${currentUser === 'admin' && !isSavedPage ? `
+                        <div class="admin-actions">
+                            <button class="edit-btn" data-index="${index}">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="delete-btn" data-index="${index}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    ` : ''}
+                    
+                    ${isSavedPage ? `
+                        <div class="admin-actions">
+                            <button class="delete-btn" data-tool-id="${tool.id}" data-action="unsave">
+                                <i class="fas fa-bookmark-slash"></i> Remove from Saved
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Add event listeners for TOP buttons
+            card.querySelector('.like-btn-top').addEventListener('click', () => handleLikeTool(tool.id, card));
+            card.querySelector('.save-btn-top').addEventListener('click', () => handleSaveTool(tool.id, card));
+            
+            // Add event listeners for other buttons
+            card.querySelector('[data-action="open"]').addEventListener('click', () => handleViewTool(tool.id));
+            card.querySelectorAll('[data-action="like"]').forEach(btn => {
+                if (!btn.classList.contains('like-btn-top')) {
+                    btn.addEventListener('click', () => handleLikeTool(tool.id, card));
+                }
+            });
+            card.querySelectorAll('[data-action="save"]').forEach(btn => {
+                if (!btn.classList.contains('save-btn-top')) {
+                    btn.addEventListener('click', () => handleSaveTool(tool.id, card));
+                }
+            });
+            card.querySelector('[data-action="view"]').addEventListener('click', () => handleViewTool(tool.id));
+            
+            if (isSavedPage) {
+                card.querySelector('[data-action="unsave"]').addEventListener('click', () => handleSaveTool(tool.id, card));
+            }
+            
+            if (currentUser === 'admin' && !isSavedPage) {
+                const toolIndex = tools.findIndex(t => t.id === tool.id);
+                card.querySelector('.edit-btn').addEventListener('click', () => editTool(toolIndex));
+                card.querySelector('.delete-btn').addEventListener('click', () => deleteTool(toolIndex));
+            }
+            
+            return card;
+        }
+
+        function handleLikeTool(toolId, card) {
+            const likeBtnTop = card.querySelector('.like-btn-top');
+            const likeIcon = likeBtnTop.querySelector('.fa-heart');
+            
+            // Add animation
+            likeIcon.classList.add('heart-beat');
+            setTimeout(() => likeIcon.classList.remove('heart-beat'), 500);
+            
+            likeTool(toolId);
+        }
+
+        function handleSaveTool(toolId, card) {
+            const saveBtnTop = card.querySelector('.save-btn-top');
+            const saveIcon = saveBtnTop.querySelector('.fa-bookmark');
+            
+            saveIcon.classList.add('save-bounce');
+            setTimeout(() => saveIcon.classList.remove('save-bounce'), 500);
+            
+            saveTool(toolId);
+        }
+
+        function handleViewTool(toolId) {
+            const toolIndex = tools.findIndex(t => t.id === toolId);
+            if (toolIndex === -1) return;
+            
+            const tool = tools[toolIndex];
+            
+            // Increment views
+            tool.views = (tool.views || 0) + 1;
+            
+            // Save data to localStorage
+            saveTools();
+            updateStats();
+            
+            // Open tool
+            window.open(tool.url, '_blank');
+            
+            showNotification(`Opening ${tool.name}...`);
+        }
+
+        function editTool(index) {
+            const tool = tools[index];
+            currentEditIndex = index;
+            
+            document.getElementById('toolName').value = tool.name;
+            document.getElementById('toolCategory').value = tool.category;
+            document.getElementById('toolDescription').value = tool.description;
+            document.getElementById('toolUrl').value = tool.url;
+            document.getElementById('toolImage').value = tool.image;
+            document.getElementById('toolIcon').value = tool.icon;
+            
+            // Show previews
+            if (tool.image) {
+                imagePreview.src = tool.image;
+                imagePreview.style.display = 'block';
+            }
+            
+            if (tool.icon && (tool.icon.startsWith('http') || tool.icon.startsWith('data:'))) {
+                iconPreview.src = tool.icon;
+                iconPreview.style.display = 'block';
+            } else {
+                iconPreview.style.display = 'none';
+            }
+            
+            modalTitle.textContent = 'Edit Tool';
+            toolModal.style.display = 'flex';
+        }
+
+        function deleteTool(index) {
+            if (confirm(`Are you sure you want to delete "${tools[index].name}"?`)) {
+                const toolId = tools[index].id;
+                
+                // Remove from user data if exists
+                userData.likedTools = userData.likedTools.filter(id => id !== toolId);
+                userData.savedTools = userData.savedTools.filter(id => id !== toolId);
+                
+                // Remove tool
+                tools.splice(index, 1);
+                
+                // Save data to localStorage
+                saveTools();
+                saveUserData();
+                updateStats();
+                updateSavedCount();
+                renderTools();
+                showNotification('Tool deleted successfully!');
+            }
+        }
+
+        // Filter
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.getAttribute('data-filter');
+                renderTools(filter);
+            });
+        });
+
+        // Search
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.tool-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('.tool-title').textContent.toLowerCase();
+                const desc = card.querySelector('.tool-desc').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || desc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Modal
+        addToolBtn.addEventListener('click', function() {
+            if (currentUser !== 'admin') {
+                showNotification('Only admin can add tools!');
+                return;
+            }
+            
+            currentEditIndex = -1;
+            modalTitle.textContent = 'Add New Tool';
+            toolForm.reset();
+            document.getElementById('toolIcon').value = 'fas fa-tools';
+            document.getElementById('toolImage').value = 'https://images.unsplash.com/photo-1611605698335-8b1569810432?w=800';
+            imagePreview.style.display = 'none';
+            iconPreview.style.display = 'none';
+            toolModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', closeModalFunc);
+        cancelBtn.addEventListener('click', closeModalFunc);
+
+        function closeModalFunc() {
+            toolModal.style.display = 'none';
+            currentEditIndex = -1;
+            imagePreview.style.display = 'none';
+            iconPreview.style.display = 'none';
+        }
+
+        // Form submit
+        toolForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (currentUser !== 'admin') {
+                showNotification('Only admin can save tools!');
+                return;
+            }
+            
+            const toolData = {
+                id: currentEditIndex === -1 ? Date.now() : tools[currentEditIndex].id,
+                name: document.getElementById('toolName').value.trim(),
+                category: document.getElementById('toolCategory').value,
+                description: document.getElementById('toolDescription').value.trim(),
+                url: document.getElementById('toolUrl').value.trim(),
+                image: document.getElementById('toolImage').value.trim() || 'https://images.unsplash.com/photo-1611605698335-8b1569810432?w=800',
+                icon: document.getElementById('toolIcon').value.trim() || 'fas fa-tools',
+                views: currentEditIndex === -1 ? 0 : tools[currentEditIndex].views,
+                likes: currentEditIndex === -1 ? 0 : tools[currentEditIndex].likes,
+                saves: currentEditIndex === -1 ? 0 : tools[currentEditIndex].saves,
+                isPremium: document.getElementById('toolCategory').value === 'premium'
+            };
+            
+            if (currentEditIndex === -1) {
+                tools.push(toolData);
+                showNotification('Tool added successfully!');
+            } else {
+                tools[currentEditIndex] = toolData;
+                showNotification('Tool updated successfully!');
+            }
+            
+            // Save to localStorage
+            saveTools();
+            updateStats();
+            renderTools();
+            closeModalFunc();
+        });
+
+        function saveTools() {
+            localStorage.setItem('fmxabd_tools', JSON.stringify(tools));
+            console.log('Tools saved to localStorage. Total:', tools.length);
+            
+            // Test: Read back to confirm
+            const testRead = localStorage.getItem('fmxabd_tools');
+            console.log('Test read from localStorage:', JSON.parse(testRead).length);
+        }
+
+        function saveUserData() {
+            localStorage.setItem('fmxabd_user_data', JSON.stringify(userData));
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'quran': 'Quran Pak',
+                'islamic': 'Al Islamic',
+                'premium': 'Premium',
+                'general': 'General'
+            };
+            return names[category] || category;
+        }
+
+        function showNotification(message) {
+            // Remove existing notification
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
